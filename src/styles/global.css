@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: 'Inter', 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top, rgba(37, 99, 235, 0.15), transparent 30%),
+    radial-gradient(circle at 80% 20%, rgba(124, 58, 237, 0.12), transparent 28%);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply min-h-screen bg-slate-950 text-slate-100 antialiased;
+  background-color: #020617;
+  font-family: 'Inter', 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body.light {
+  @apply bg-slate-50 text-slate-950;
+}
+
+body.dark {
+  @apply bg-slate-950 text-slate-100;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(37, 99, 235, 0.25);
+  color: #ffffff;
+}
+
+#root {
+  isolation: isolate;
+}
+
+.glass-panel {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.light .glass-panel {
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.gradient-ring {
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #06b6d4 100%);
+}
+
+.typing {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid rgba(255, 255, 255, 0.8);
+  animation: type 4s steps(28) infinite alternate, blink 0.8s step-end infinite;
+}
+
+@keyframes type {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  height: 4px;
+  width: 100%;
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.scroll-progress__bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #7c3aed, #06b6d4);
+  transform-origin: left center;
+  transition: width 0.2s ease-out;
+}
