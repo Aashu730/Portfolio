@@ -13,11 +13,22 @@ function App() {
       <PortfolioProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Navigate to="/admin-login" replace />} />
-            <Route path="/portfolio" element={<Home />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
+
+            <Route path="/portfolio" element={<Navigate to="/" replace />} />
+            <Route path="/home" element={<Navigate to="/" replace />} />
+
             <Route path="/admin-login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+
+            <Route
+              path="/admin"
+              element={
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
+              }
+            />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
