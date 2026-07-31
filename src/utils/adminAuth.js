@@ -1,6 +1,8 @@
 const STORAGE_KEY = 'portfolio-admin-auth-v1'
 const SESSION_TIMEOUT_MS = 30 * 60 * 1000
-const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || ''
+
+// Change this password to your own secure password
+const ADMIN_PASSWORD = 'Aashu@730'
 
 export function getAdminPassword() {
   return ADMIN_PASSWORD
@@ -12,19 +14,27 @@ export function createAdminSession() {
     issuedAt: Date.now(),
     expiresAt: Date.now() + SESSION_TIMEOUT_MS,
   }
-  window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
+
+  if (typeof window !== 'undefined') {
+    window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
+  }
 }
 
 export function getAdminSession() {
   if (typeof window === 'undefined') return null
+
   const raw = window.sessionStorage.getItem(STORAGE_KEY)
+
   if (!raw) return null
+
   try {
     const parsed = JSON.parse(raw)
+
     if (parsed.expiresAt && Date.now() > parsed.expiresAt) {
       clearAdminSession()
       return null
     }
+
     return parsed
   } catch {
     clearAdminSession()
@@ -43,12 +53,20 @@ export function isAdminAuthenticated() {
 }
 
 export function extendAdminSession() {
-  if (!getAdminSession()) return false
+  const session = getAdminSession()
+
+  if (!session) return false
+
   const payload = {
     authenticated: true,
     issuedAt: Date.now(),
     expiresAt: Date.now() + SESSION_TIMEOUT_MS,
   }
+
   window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
   return true
+}
+
+export function logoutAdmin() {
+  clearAdminSession()
 }
