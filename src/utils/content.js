@@ -10,7 +10,7 @@ export const profile = {
   phone: '+91 98765 43210',
   github: 'https://github.com/',
   linkedin: 'https://linkedin.com/',
-  photo: heroImage,
+  photo: '/profile.jpg',
   resume: '/resume.pdf',
 }
 
@@ -117,14 +117,24 @@ export const projects = [
   },
 ]
 
-export const research = {
-  title: 'Published Research',
-  journal: 'International Journal of Emerging Computing',
-  date: '2024',
-  summary:
-    'Published research work reflects an interest in intelligent systems, practical AI solutions, and scalable problem solving.',
-  highlights: ['AI-focused research', 'Practical application', 'Software-driven insights'],
-}
+export const research = [
+  {
+    title: 'Published Research',
+    journal: 'International Journal of Emerging Computing',
+    date: '2024',
+    summary:
+      'Published research work reflects an interest in intelligent systems, practical AI solutions, and scalable problem solving.',
+    highlights: ['AI-focused research', 'Practical application', 'Software-driven insights'],
+  },
+  {
+    title: 'Applied AI Systems',
+    journal: 'Conference Proceedings on Intelligent Software',
+    date: '2025',
+    summary:
+      'A second research contribution focused on applied AI workflows, modern software systems, and problem-driven implementation.',
+    highlights: ['Applied AI', 'Software architecture', 'Data-informed design'],
+  },
+]
 
 export const certifications = [
   { title: 'Google Cloud', issuer: 'Google Cloud', status: 'Credential available' },

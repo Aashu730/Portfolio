@@ -1,11 +1,34 @@
+import { useEffect, useRef, useState } from 'react'
 import { FiArrowRight, FiDownload, FiGithub, FiLinkedin, FiMail } from 'react-icons/fi'
-import { socialLinks } from '../utils/content'
 import { usePortfolio } from '../context/PortfolioContext'
 import heroImage from '../assets/hero.png'
+
+const DEFAULT_PHOTO = '/profile.jpg'
 
 export default function Hero() {
   const { data } = usePortfolio()
   const profile = data.profile
+  const photoSrc = typeof profile.photo === 'string' && profile.photo.trim() ? profile.photo : DEFAULT_PHOTO
+  const resumeHref = profile.resume?.trim() || '/resume.pdf'
+  const [imageSrc, setImageSrc] = useState(photoSrc)
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const imgRef = useRef(null)
+
+  useEffect(() => {
+    setImageSrc(photoSrc)
+    setImageLoaded(false)
+  }, [photoSrc])
+
+  useEffect(() => {
+    if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
+      setImageLoaded(true)
+    }
+  }, [imageSrc])
+  const socialLinks = [
+    ...(profile.github ? [{ label: 'GitHub', href: profile.github, icon: 'github' }] : []),
+    ...(profile.linkedin ? [{ label: 'LinkedIn', href: profile.linkedin, icon: 'linkedin' }] : []),
+    ...(profile.email ? [{ label: 'Email', href: `mailto:${profile.email}`, icon: 'mail' }] : []),
+  ]
 
   return (
     <section id="home" className="relative overflow-hidden pb-24 pt-28 sm:pt-32 lg:pb-32 lg:pt-36">
@@ -29,7 +52,7 @@ export default function Hero() {
             </h1>
 
             <div className="text-xl font-semibold text-brand-accent sm:text-2xl">
-              Python Developer
+              {profile.title}
             </div>
 
             <p className="max-w-xl text-lg leading-8 text-slate-300">
@@ -38,8 +61,9 @@ export default function Hero() {
 
             <div className="flex flex-wrap gap-4">
               <a
-                href={profile.resume}
-                download
+                href={resumeHref}
+                download="Aashutosh-Sabat-Resume.pdf"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center rounded-full bg-brand-primary px-6 py-3 text-sm font-semibold text-white"
               >
                 <FiDownload className="mr-2" />
@@ -96,16 +120,29 @@ export default function Hero() {
 
                 {/* PROFILE IMAGE */}
                 <div className="mt-4 overflow-hidden rounded-[1.6rem] border border-white/10 bg-slate-900">
-                  <img
-                    src={profile.photo || heroImage}
-                    alt={profile.name}
-                    className="h-[460px] w-full object-cover object-center"
-                    loading="lazy"
-                    onError={(e) => {
-                      e.currentTarget.onerror = null
-                      e.currentTarget.src = heroImage
-                    }}
-                  />
+                  <div className="h-[320px] w-full bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950 sm:h-[380px] lg:h-[460px]">
+                    <img
+                      ref={imgRef}
+                      src={imageSrc}
+                      alt={profile.name || 'Profile photo'}
+                      className={`h-full w-full object-cover object-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-90'}`}
+                      loading="eager"
+                      decoding="async"
+                      fetchPriority="high"
+                      width="800"
+                      height="1000"
+                      onLoad={() => setImageLoaded(true)}
+                      onError={() => {
+                        if (imageSrc !== DEFAULT_PHOTO) {
+                          setImageSrc(DEFAULT_PHOTO)
+                          setImageLoaded(true)
+                        } else if (imageSrc !== heroImage) {
+                          setImageSrc(heroImage)
+                          setImageLoaded(true)
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
 
                 <div className="mt-4 grid gap-3 sm:grid-cols-3">
